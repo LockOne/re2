@@ -14,7 +14,7 @@
 
 CXX?=g++
 # can override
-CXXFLAGS?=-O3 -g
+CXXFLAGS?=-O3 
 LDFLAGS?=
 # required
 RE2_CXXFLAGS?=-std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -I. $(CCICU) $(CCPCRE)
@@ -68,7 +68,9 @@ SOEXTVER00=$(SOEXT).$(SONAME).0.0
 MAKE_SHARED_LIBRARY=$(CXX) -shared -Wl,-soname,libre2.$(SOEXTVER),--version-script,libre2.symbols $(RE2_LDFLAGS) $(LDFLAGS)
 endif
 
-all: obj/libre2.a obj/so/libre2.$(SOEXT)
+FUZZFILE=obj/fuzz
+
+all: obj/libre2.a obj/so/libre2.$(SOEXT) $(FUZZFILE)
 
 INSTALL_HFILES=\
 	re2/filtered_re2.h\
@@ -132,6 +134,7 @@ OFILES=\
 	obj/re2/unicode_casefold.o\
 	obj/re2/unicode_groups.o\
 
+
 TESTOFILES=\
 	obj/util/pcre.o\
 	obj/re2/testing/backtrack.o\
@@ -188,7 +191,7 @@ obj/so/%.o: %.cc $(HFILES)
 	@mkdir -p $$(dirname $@)
 	$(CXX) -c -o $@ -fPIC $(CPPFLAGS) $(RE2_CXXFLAGS) $(CXXFLAGS) -DNDEBUG $*.cc
 
-obj/libre2.a: $(OFILES)
+obj/libre2.a: $(OFILES) 
 	@mkdir -p obj
 	$(AR) $(ARFLAGS) obj/libre2.a $(OFILES)
 
@@ -223,6 +226,11 @@ obj/test/regexp_benchmark: obj/libre2.a obj/re2/testing/regexp_benchmark.o $(TES
 # is simply a way to check that the target builds and then to run it against a
 # fixed set of inputs. To perform real fuzzing, refer to the documentation for
 # libFuzzer (llvm.org/docs/LibFuzzer.html) and AFL (lcamtuf.coredump.cx/afl/).
+obj/fuzz: 
+	@mkdir -p obj
+	$(CXX) -c -o fuzz.o re2/fuzzing/re2_main.cc -std=c++11 -lpthread -O3 -I. -I./re2/fuzzing/compiler-rt/include $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) -o fuzz $(LDFLAGS) fuzz.o obj/util/strutil.o obj/libre2.a -lpthread
+
 obj/test/re2_fuzzer: CXXFLAGS:=-I./re2/fuzzing/compiler-rt/include $(CXXFLAGS)
 obj/test/re2_fuzzer: obj/libre2.a obj/re2/fuzzing/re2_fuzzer.o obj/util/fuzz.o
 	@mkdir -p obj/test
