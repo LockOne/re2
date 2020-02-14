@@ -6,6 +6,8 @@ LDFLAGS="-lc++" CXX=gclang++ CXXFLAGS="-v -stdlib=libc++" make
 
 get-bc fuzz
 
-LDFLAGS="-lc++" CXXFLAGS="-v -stdlib=libc++" ${ANGORA_LOC}/bin/angora-clang++ fuzz.bc -o ${ANGORA_LOC}/subjects/re2.fast
+#LDFLAGS="-lc++"
+CXXFLAGS="-v -stdlib=libc++" ${ANGORA_LOC}/bin/angora-clang++ fuzz.bc -o ${ANGORA_LOC}/subjects/re2.fast
 mv FuncInfo.txt ${ANGORA_LOC}/FInfos/FuncInfo-re2.txt
-LDFLAGS="-lc++" CXXFLAGS="-v -stdlib=libc++" USE_TRACK=1  ${ANGORA_LOC}/bin/angora-clang++ fuzz.bc -o ${ANGORA_LOC}/subjects/re2.tt
+#LDFLAGS="-lc++"
+CXXFLAGS="-v -stdlib=libc++" USE_TRACK=1  ${ANGORA_LOC}/bin/angora-clang++ fuzz.bc -o ${ANGORA_LOC}/subjects/re2.tt
