@@ -2,7 +2,7 @@ ANGORA_LOC=/local_home/cheong/Angora_func
 
 make clean
 rm fuzz fuzz.bc fuzz.fast fuzz.o fuzz.tt
-CXX=gclang++  make
+CXX=gclang++ CXXFLAGS="-stdlib=libc++" LDFLAGS="-lc++" make
 
 get-bc fuzz
 
