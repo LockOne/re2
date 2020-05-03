@@ -229,7 +229,7 @@ obj/test/regexp_benchmark: obj/libre2.a obj/re2/testing/regexp_benchmark.o $(TES
 obj/fuzz: 
 	@mkdir -p obj
 	$(CXX) -c -o fuzz.o re2/fuzzing/re2_main.cc -std=c++11 -lpthread -O3 -I. -I./re2/fuzzing/compiler-rt/include $(CXXFLAGS) $(LDFLAGS)
-	$(CXX) -o fuzz $(LDFLAGS) fuzz.o obj/util/strutil.o obj/libre2.a -lpthread
+	$(CXX) -o fuzz $(LDFLAGS) fuzz.o obj/util/strutil.o obj/libre2.a -lpthread ${CXXFLAGS}
 
 obj/test/re2_fuzzer: CXXFLAGS:=-I./re2/fuzzing/compiler-rt/include $(CXXFLAGS)
 obj/test/re2_fuzzer: obj/libre2.a obj/re2/fuzzing/re2_fuzzer.o obj/util/fuzz.o
