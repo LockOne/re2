@@ -42,7 +42,7 @@
 #include "util/strutil.h"
 #include "re2/pod_array.h"
 #include "re2/prog.h"
-#include "re2/re2.sh"
+#include "re2/re2.h"
 #include "re2/sparse_set.h"
 #include "re2/stringpiece.h"
 
