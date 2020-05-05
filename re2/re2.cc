@@ -184,7 +184,7 @@ void RE2::Init(const StringPiece& pattern, const Options& options) {
   suffix_regexp_ = NULL;
   prog_ = NULL;
   num_captures_ = -1;
-  is_one_pass = false;
+  is_one_pass_ = false;
 
   rprog_ = NULL;
   named_groups_ = NULL;
@@ -668,7 +668,7 @@ bool RE2::Match(const StringPiece& text,
   hooks::context = this;
 #endif
   bool dfa_failed = false;
-  book skipped_test = false;
+  bool skipped_test = false;
   switch (re_anchor) {
     default:
       LOG(DFATAL) << "Unexpected re_anchor value: " << re_anchor;
